@@ -32,71 +32,97 @@ document.addEventListener("DOMContentLoaded", event => {
     .then(snapshot => {
       snapshot.forEach(doc => {
         // log('doc: ', doc.data());
+        // log(doc.id)
+        // debugger;
         // console.log(doc.id, '=>', doc.data());
-        allTrains.push(doc.data());
+        allTrains.push({ data: doc.data(), auto_id: doc.id });
         log(`snapshot...`);
 
+
       });
+
+      if (allTrains.length !== 0) {
+        allTrains.forEach(doc => {
+          log('doc::', doc);
+          let { id } = doc.auto_id;
+          
+          let { name, destination, frequency, next_arrival, minutes_away } = doc.data;
+          addTrain(name, destination, frequency, next_arrival, minutes_away, doc.auto_id);
+
+            log(`name: ${name}
+                destination: ${destination}
+                frequency: ${frequency}
+                next arrival: ${next_arrival}
+                minutes away: ${minutes_away}
+                id: ${doc.auto_id}`);
+              log(`-------------`);
+              // debugger;
+        });
+      }
+
+
     })
     .catch(err => {
       console.log('Error getting documents', err);
     });
 
 
-    
-
-    log(`allTrains:: `, allTrains);
-
-    allTrains.forEach(doc => {
-      log(doc)
-      log(`forEACH`);
-
-      let { name, destination, frequency, next_arrival, minutes_away, id } = doc;
-
-      log(`name: ${name}
-          destination: ${destination}
-          frequency: ${frequency}
-          next arrival: ${next_arrival}
-          minutes away: ${minutes_away}
-          id: ${id}`);
-        log(`-------------`);
 
 
-      addTrain(name, destination, frequency, next_arrival, minutes_away, id);
-    }); 
+  // log(`allTrains:: `, allTrains);
+
+  // ADDING TRAINS ... BEGIN
+  // allTrains.forEach(doc => {
+  //   log(doc)
+  //   log(`forEACH`);
+
+  //   let { name, destination, frequency, next_arrival, minutes_away, id } = doc;
+
+  //   log(`name: ${name}
+  //       destination: ${destination}
+  //       frequency: ${frequency}
+  //       next arrival: ${next_arrival}
+  //       minutes away: ${minutes_away}
+  //       id: ${id}`);
+  //     log(`-------------`);
+  //   addTrain(name, destination, frequency, next_arrival, minutes_away, id);
+  // }); 
+
+  // ADDING TRAINS ... END
 
 
 });
 
 function addTrain(name, destination, frequency, next_arrival, minutes_away, id) {
-  log(`name: ${name}
-  destination: ${destination}
-  frequency: ${frequency}
-  next arrival: ${next_arrival}
-  minutes away: ${minutes_away}
-  id: ${id}`);
-  log(`-------------`);
+  // log(`name: ${name}
+  // destination: ${destination}
+  // frequency: ${frequency}
+  // next arrival: ${next_arrival}
+  // minutes away: ${minutes_away}
+  // id: ${id}`);
+  // log(`-------------`);
 
+  log(id)
 
-
-  let tr = $('<tr>');
+  let tr = $(`<tr id=${id}>`);
   let th = $(`<th scope="row">`);
   let td = $(`<td>`);
 
   // add class of name to tags within the tbody for each individual train
-  tr.addClass(name);
-  tr.attr('id', id);
+  // tr.addClass(name);
   // th.addClass(name);
   // td.addClass(name);
 
-  $(`tbody`).append(tr);
+  $(`#table_body`).append(tr);
 
   // find the row with the class name, then add the name as the heading
   $(`tr#${id}`).append(th.text(name));
-  // $(`tr#${id}`).append($('<td>').text(destination));
-  // $(`tr#${id}`).append($('<td>').text(frequency));
-  // $(`tr#${id}`).append($('<td>').text(next_arrival));
-  // $(`tr#${id}`).append($('<td>').text(minutes_away));
+  $(`tr#${id}`).append($(td).text(destination));
+  $(`tr#${id}`).append($('<td>').text(frequency));
+  $(`tr#${id}`).append($('<td>').text(next_arrival));
+  $(`tr#${id}`).append($('<td>').text(minutes_away));
+
+
 
 
 
