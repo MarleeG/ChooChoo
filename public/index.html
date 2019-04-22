@@ -29,6 +29,8 @@
   <!-- initialize the SDK after all desired features are loaded -->
   <script defer src="/__/firebase/init.js"></script>
 
+  <!-- Internal Stylesheet -->
+  <link rel="stylesheet" href="./style/style.css">
 </head>
 
 <body>
@@ -40,12 +42,41 @@
       </div>
     </div>
     <div class="row">
-      <button type="button" class="btn btn-primary" id='google_login'>
+
+      <table class="table mx-auto train_table">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">Train Name</th>
+            <th scope="col">Destination</th>
+            <th scope="col">Frequency (min)</th>
+            <th scope="col">Next Arrival</th>
+            <th scope="col">Minutes Away</th>
+
+          </tr>
+        </thead>
+        <tbody>
+
+          <!-- <tr>
+            <th scope="row">Boston</th>
+            <td>Florida</td>
+            <td>4573</td>
+            <td>01:56 PM</td>
+            <td>40</td>
+          </tr> -->
+
+
+          
+        </tbody>
+      </table>
+
+      <!-- Google Login Button -->
+      <!-- <button type="button" class="btn btn-primary" id='google_login'>
         Login with Google
-      </button>
+      </button> -->
     </div>
   </div>
 
   <script src='./app.js'></script>
 </body>
+
 </html>
