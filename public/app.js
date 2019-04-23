@@ -56,7 +56,6 @@ document.addEventListener("DOMContentLoaded", event => {
                 minutes away: ${minutes_away}
                 id: ${doc.auto_id}`);
               log(`-------------`);
-              // debugger;
         });
       }
 
