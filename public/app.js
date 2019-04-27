@@ -1,8 +1,8 @@
 const log = console.log;
 
-// When DOM elements are loaded then...
-
 var allTrains = [];
+
+// When DOM elements are loaded then...
 document.addEventListener("DOMContentLoaded", event => {
   const app = firebase.app();
   const db = firebase.firestore();
@@ -26,116 +26,108 @@ document.addEventListener("DOMContentLoaded", event => {
 
 
   const trains = db.collection('trains');
-  // Add a new document in collection "cities" with ID 'LA'
-
   trains.get()
     .then(snapshot => {
       snapshot.forEach(doc => {
         // log('doc: ', doc.data());
         // log(doc.id)
-        // debugger;
         // console.log(doc.id, '=>', doc.data());
         allTrains.push({ data: doc.data(), auto_id: doc.id });
-        log(`snapshot...`);
-
-
+        // log(`snapshot...`);
       });
 
       if (allTrains.length !== 0) {
         allTrains.forEach(doc => {
-          log('doc::', doc);
-          let { id } = doc.auto_id;
-          
+          // log('doc::', doc);
           let { name, destination, frequency, next_arrival, minutes_away } = doc.data;
           addTrain(name, destination, frequency, next_arrival, minutes_away, doc.auto_id);
 
-            log(`name: ${name}
-                destination: ${destination}
-                frequency: ${frequency}
-                next arrival: ${next_arrival}
-                minutes away: ${minutes_away}
-                id: ${doc.auto_id}`);
-              log(`-------------`);
+          // log(`name: ${name}
+          //     destination: ${destination}
+          //     frequency: ${frequency}
+          //     next arrival: ${next_arrival}
+          //     minutes away: ${minutes_away}
+          //     id: ${doc.auto_id}`);
+          //   log(`-------------`);
         });
       }
-
-
     })
     .catch(err => {
       console.log('Error getting documents', err);
     });
 
-
-
-
-  // log(`allTrains:: `, allTrains);
-
-  // ADDING TRAINS ... BEGIN
-  // allTrains.forEach(doc => {
-  //   log(doc)
-  //   log(`forEACH`);
-
-  //   let { name, destination, frequency, next_arrival, minutes_away, id } = doc;
-
-  //   log(`name: ${name}
-  //       destination: ${destination}
-  //       frequency: ${frequency}
-  //       next arrival: ${next_arrival}
-  //       minutes away: ${minutes_away}
-  //       id: ${id}`);
-  //     log(`-------------`);
-  //   addTrain(name, destination, frequency, next_arrival, minutes_away, id);
-  // }); 
-
-  // ADDING TRAINS ... END
-
-
 });
 
 function addTrain(name, destination, frequency, next_arrival, minutes_away, id) {
-  // log(`name: ${name}
-  // destination: ${destination}
-  // frequency: ${frequency}
-  // next arrival: ${next_arrival}
-  // minutes away: ${minutes_away}
-  // id: ${id}`);
-  // log(`-------------`);
-
-  log(id)
-
+  // table row w. id attr
   let tr = $(`<tr id=${id}>`);
+
+  // table heading
   let th = $(`<th scope="row">`);
+
+  // table data
   let td = $(`<td>`);
 
-  // add class of name to tags within the tbody for each individual train
-  // tr.addClass(name);
-  // th.addClass(name);
-  // td.addClass(name);
+  // append table row to tbody tag 
+  $(`tbody`).append(tr);
 
-  $(`#table_body`).append(tr);
-
-  // find the row with the class name, then add the name as the heading
+  // find the specific table row and append a table heading and table data
   $(`tr#${id}`).append(th.text(name));
   $(`tr#${id}`).append($(td).text(destination));
   $(`tr#${id}`).append($('<td>').text(frequency));
   $(`tr#${id}`).append($('<td>').text(next_arrival));
   $(`tr#${id}`).append($('<td>').text(minutes_away));
-
-
-
-
-
-
-
-
-
-
 }
 
 
+function randomNumberGenerator(max){
+  let ran_num = Math.floor(Math.random() * max) + 1; 
+  return ran_num;
+}
+
+// AM PM Generator
+function morningAfternoonGenerator(){
+  let array_time = [0,1];
+  let ran_num = Math.floor(Math.random() * 2);
+  let time_of_day = '';
+
+  if(array_time[ran_num] === 0){
+    time_of_day = 'AM';
+  }else{
+    time_of_day = 'PM';
+  }
+
+  return time_of_day;
+}
 
 
+// add train button
+$('#add_train_btn').click(event => {
+  log(`add button clicked`);
 
+  let train_name = $('#train_name_input').val().trim();
+  let destination_name = $('#destination_input').val().trim();
+  let frequency_name = $('#frequency_input').val().trim();
+
+  let hour = randomNumberGenerator(25);
+  let minute = randomNumberGenerator(60);
+
+  let next_arrival = `${hour}: ${minute} ${morningAfternoonGenerator}`;
+
+  if(train_name && destination_name && frequency_name){
+    log('not empty. good name');
+    log(train_name);
+    log(destination_name);
+    log(frequency_name);
+    log(next_arrival);
+  }else{
+    log(`empty`);
+  }
+
+  // Empty the input values
+  $('#train_name_input').val('');
+  $('#destination_input').val('');
+})
 
 // Google Login
 // function googleLogin() {
@@ -155,57 +147,3 @@ function addTrain(name, destination, frequency, next_arrival, minutes_away, id) 
 //   googleLogin();
 // });
 // Google login
-
-
-// Pre-set train data
-var trains_data = [
-  {
-    name: 'Trenton Express',
-    destination: 'Trenton',
-    frequency: 25,
-    next_arrival: '05:35 PM',
-    minutes_away: 10
-  },
-  {
-    name: 'Oregon Trail',
-    destination: 'Salem, Oregon',
-    frequency: 3600,
-    next_arrival: '01:39 PM',
-    minutes_away: 1154,
-  },
-  {
-    name: 'Midnight Carriage',
-    destination: 'Philadelphia',
-    frequency: 15,
-    next_arrival: '05:35 PM',
-    minutes_away: 10
-  },
-  {
-    name: 'Sing Sing Caravan',
-    destination: 'Atlanta',
-    frequency: 45,
-    next_arrival: '05:53 PM',
-    minutes_away: 28
-  },
-  {
-    name: 'Boston Bus',
-    destination: 'Boston',
-    frequency: 65,
-    next_arrival: '05:50 PM',
-    minutes_away: 25
-  },
-  {
-    name: 'California Caravan',
-    destination: 'San Francisco',
-    frequency: 6000,
-    next_arrival: '01:25 PM',
-    minutes_away: 4740
-  },
-  {
-    name: `Analben's Train`,
-    destination: 'Florida',
-    frequency: 25,
-    next_arrival: '05:28 PM',
-    minutes_away: 3
-  },
-];

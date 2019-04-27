@@ -1,5 +1,14 @@
-.train_table{
+.add_train_container{
+    /* border-top: 10px solid #343a40;  */
+    padding: 15px;
     width: 90%;
-    margin-top: 5%;
-    
+}
+
+/*.add_train_title, .current_train_title{
+    border-bottom: 5px solid #343a40;
+    padding: 15px;
+}*/
+
+.cloud_table{
+    border-bottom: 1px solid #343a40;
 }
