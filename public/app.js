@@ -1,6 +1,13 @@
 const log = console.log;
 
 var allTrains = [];
+$('#form_warning').hide();
+
+// let cat = 'gg';
+// let how_many = 4;
+
+// log(parseInt(cat));
+// log(parseInt(how_many));
 
 // When DOM elements are loaded then...
 document.addEventListener("DOMContentLoaded", event => {
@@ -80,20 +87,20 @@ function addTrain(name, destination, frequency, next_arrival, minutes_away, id) 
 }
 
 
-function randomNumberGenerator(max){
-  let ran_num = Math.floor(Math.random() * max) + 1; 
+function randomNumberGenerator(max) {
+  let ran_num = Math.floor(Math.random() * max);
   return ran_num;
 }
 
 // AM PM Generator
-function morningAfternoonGenerator(){
-  let array_time = [0,1];
+function morningAfternoonGenerator() {
+  let array_time = [0, 1];
   let ran_num = Math.floor(Math.random() * 2);
   let time_of_day = '';
 
-  if(array_time[ran_num] === 0){
+  if (array_time[ran_num] === 0) {
     time_of_day = 'AM';
-  }else{
+  } else {
     time_of_day = 'PM';
   }
 
@@ -103,30 +110,67 @@ function morningAfternoonGenerator(){
 
 // add train button
 $('#add_train_btn').click(event => {
-  log(`add button clicked`);
+  log(`add button clicked...`);
 
   let train_name = $('#train_name_input').val().trim();
   let destination_name = $('#destination_input').val().trim();
-  let frequency_name = $('#frequency_input').val().trim();
-
+  let frequency_input = $('#frequency_input').val().trim();
   let hour = randomNumberGenerator(25);
   let minute = randomNumberGenerator(60);
 
-  let next_arrival = `${hour}: ${minute} ${morningAfternoonGenerator}`;
+  // if hour is less than ten add a 0 in front of it
+  if (hour < 10) {
+    hour = `0${hour}`;
+  } ``
 
-  if(train_name && destination_name && frequency_name){
-    log('not empty. good name');
-    log(train_name);
-    log(destination_name);
-    log(frequency_name);
-    log(next_arrival);
-  }else{
-    log(`empty`);
+  // if minute is less than ten add a 0 in front of it
+  if (minute < 10) {
+    minute = `0${minute}`;
   }
 
-  // Empty the input values
-  $('#train_name_input').val('');
-  $('#destination_input').val('');
+  // Next arrival hh:mm am || pm
+  let next_arrival = `${hour}:${minute} ${morningAfternoonGenerator()}`;
+
+  // Generate a minutes away
+  let minutes_away = randomNumberGenerator(7000) ? randomNumberGenerator(7000) : randomNumberGenerator(7000) + 1;
+
+
+  log('f-input: ', frequency_input)
+
+  if (train_name && destination_name && frequency_input) {
+    // log('not empty. good name');
+    // log(train_name);
+    // log(destination_name);
+    // log('next-arrival: ', next_arrival);
+    // log('f-input: ', frequency_input);
+
+    // change frequency value to number
+    let frequency_to_num = parseInt(frequency_input);
+
+    // if frequency_to_num is a number then...
+    if (isNaN(frequency_to_num)) {
+      log(typeof frequency_to_num);
+      alert(`not a number`);
+
+      $('#form_warning').text(`Please enter a valid number for the frequency.`);
+
+      $('#form_warning').show();
+
+    } else if (frequency_to_num >= 0) {
+      log(typeof frequency_to_num);
+      alert(`a number`);
+
+      // Empty the input values
+      $('#train_name_input').val('');
+      $('#destination_input').val('');
+      $('#frequency_input').val('');
+    }
+
+  } else {
+    log(`try entering new values for fields..`);
+  }
+
+
 })
 
 // Google Login
